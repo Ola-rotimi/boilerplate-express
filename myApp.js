@@ -10,16 +10,22 @@ app.get("/", (req, res) => {
 app.use("/public", express.static(__dirname + "/public"));
 
 app.get("/json", (req, res, next) => {
-    console.log(`${req.method} ${req.path} - ${req.ip}`);
+console.log(`${req.method} ${req.path} - ${req.ip}`);
     next();
+}, (req, res) => {
+    if (process.env.MESSAGE_STYLE == "uppercase") {
+        response = "Hello json".toUpperCase();
+    } else {
+        response = "Hello json";
+    }
+    res.json({ "message": response });
+});
 
-    // if (process.env.MESSAGE_STYLE == "uppercase") {
-    //     response = "Hello json".toUpperCase();
-    // } else {
-    //     response = "Hello json";
-    // }
-    // res.json({ "message": response });
-
+app.get("/now", (req, res, next) => {
+    req.time = new Date().toString();
+    next();
+}, (req, res) => {
+    res.send({ time: req.time });
 });
 
 
