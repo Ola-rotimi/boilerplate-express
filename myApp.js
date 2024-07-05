@@ -1,6 +1,7 @@
 let express = require('express');
 let app = express();
 require("dotenv").config()
+let bodyParser = require('body-parser')
 
 let absolutePath = __dirname + "/views/index.html";
 
@@ -33,14 +34,17 @@ app.use("/public", express.static(__dirname + "/public"));
 //     res.json({ echo: word })
 // })
 
-app.get("/name", (req, res)=> {
-    const {first: firstname, last: lastname} = req.query;
-    res.json({name: `${firstname} ${lastname}`})
+// app.get("/name", (req, res)=> {
+//     const {first: firstname, last: lastname} = req.query;
+//     res.json({name: `${firstname} ${lastname}`})
+// })
+
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.post("/name", (req, res) => {
+    const { first: firstname, last: lastname } = req.body
+    res.json({ name: `${firstname}, ${lastname}` });
 })
-
-
-
-
 
 
 
